@@ -93,14 +93,14 @@ export default function Form() {
                 htmlFor={`comment_${index}`}
                 className="block font-semibold mb-2"
               >
-                {judge}'s Comments
+                {judge}&apos;s Comments
               </label>
               <textarea
                 id={`comment_${index}`}
                 name={`comment_${index}`}
                 rows="3"
                 className="w-full border border-gray-300 rounded-md p-2"
-                placeholder={`Enter ${judge}'s comments here`}
+                placeholder={`Enter ${judge}&apos;s comments here`}
               />
             </div>
           ))}

@@ -12,7 +12,7 @@ export default function ScoreSummary({ choirs }) {
             SANS 2.0 SCORE SHEET
           </h1>
           <h2 className="text-center text-lg font-semibold mb-6">
-            {`${choir.choirDetails.choirName}'s Score Summary`}
+            {`${choir.choirDetails.choirName}&apos;s Score Summary`}
           </h2>
 
           {/* Choir Details Section */}
@@ -113,11 +113,13 @@ export default function ScoreSummary({ choirs }) {
 
           {/* Judges' Comments */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4">Judges' Comments</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Judges&apos; Comments
+            </h3>
             {["IgeSings", "Frettic", "Bambam"].map((judge, index) => (
               <div key={index} className="mb-4">
                 <label className="block font-semibold mb-2">
-                  {judge}'s Comments
+                  {judge}&apos;s Comments
                 </label>
                 <div className="border border-gray-300 p-2 rounded-md bg-gray-50">
                   {choir.comments[judge]}
