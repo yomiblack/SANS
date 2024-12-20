@@ -21,7 +21,7 @@ export default function About() {
         </h1>
         <p className="text-sm md:text-lg leading-relaxed text-gray-700">
           <span className="text-orange-700 font-semibold">
-            "Sing A New Song"
+            &quot;Sing A New Song&quot;
           </span>
           (SANS) is a transformative initiative that celebrates gospel music. It
           inspires choirs to embrace creativity, originality, and deeper

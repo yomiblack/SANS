@@ -11,8 +11,8 @@ export default function Sans1() {
 
         {/* Subtitle */}
         <p className="text-lg">
-          The event has concluded, but we’re working on curating the highlights
-          and moments for you. Check back soon!
+          The event has concluded, but we&apos;re working on curating the
+          highlights and moments for you. Check back soon!
         </p>
 
         {/* Placeholder Icon */}
