@@ -39,7 +39,12 @@ export default function SideBarContent({ choirs, currentPage }) {
         />
       </div>
 
-      <Link href="/choirs/form">{<button>{`+ Add Choir`}</button>}</Link>
+      {/* Add Choir Button */}
+      <Link href="/choirs/form">
+        <button className="w-full p-2 text-white bg-gradient-to-r from-blue-500 to-green-500 rounded-lg mb-4 md:mb-6">
+          + Add Choir
+        </button>
+      </Link>
 
       {/* Always display filtered choirs */}
       {searchQuery && (

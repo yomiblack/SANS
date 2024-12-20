@@ -5,15 +5,15 @@ export default async function Result() {
   const choirs = await getFromDatabase(null, "gratitude");
 
   return (
-    // <div className="flex min-h-screen bg-gray-100">
-    <div className="w-full flex flex-col items-center py-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Final Result</h2>
+    <div className="w-full min-h-screen bg-gray-100 flex flex-col items-center py-8 px-4 sm:px-6">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
+        Final Result
+      </h2>
       {choirs.length > 0 ? (
         <ResultSummary choirs={choirs} />
       ) : (
-        <p>Loading...</p>
+        <p className="text-lg text-gray-600">Loading...</p>
       )}
     </div>
-    // </div>
   );
 }
