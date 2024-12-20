@@ -15,10 +15,14 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "SANS2.0 Gratitude!",
+  title: "SANS!",
   description: "Welcome to SANS Musical Contest!",
-  viewport: "width=device-width, initial-scale=1.0", // Add viewport here
 };
+
+export const generateViewport = () => ({
+  width: "device-width",
+  initialScale: 1,
+});
 
 export default function RootLayout({ children }) {
   return (

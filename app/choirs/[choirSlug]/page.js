@@ -2,6 +2,13 @@ import getFromDatabase from "@/app/components/action/getFromDatabase";
 import ScoreSummary from "@/app/components/scoreSummary";
 import SideBar from "@/app/components/sidebar";
 
+export async function generateMetadata({ params }) {
+  return {
+    title: `${params._id}`,
+    description: "Data is generated dynamically for this page",
+  };
+}
+
 export default async function ChoirSummary({ params }) {
   let currentPage;
   const current = await params;

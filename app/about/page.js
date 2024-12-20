@@ -1,21 +1,14 @@
 import Image from "next/image";
-import Head from "next/head";
+
+export const metadata = {
+  title: "About SANS",
+  description: "About SANS Musical Contest",
+};
 
 export default function About() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FDEFF4] via-[#FDFCFB] to-[#E8F8F5] px-6">
       <div className="bg-white p-10 rounded-lg shadow-lg max-w-3xl">
-        <Head>
-          <title>About SANS</title>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-          <meta
-            name="description"
-            content="Learn more about SANS Musical Contest!"
-          />
-        </Head>{" "}
         <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-6">
           About <span className="text-orange-700">SANS</span>
         </h1>
