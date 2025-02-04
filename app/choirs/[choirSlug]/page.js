@@ -1,44 +1,40 @@
-import getFromDatabase from "@/app/components/action/getFromDatabase";
-import ScoreSummary from "@/app/components/scoreSummary";
-import SideBar from "@/app/components/sidebar";
+import Loading from "@/app/components/util/loading";
+import ChoirSummaryClient from "@/app/components/slug/choirSummaryClient";
+import choirsDatabase from "@/app/components/action/choirsDatabase";
 
-export async function generateMetadata({ params }) {
-  return {
-    title: `${params._id}`,
-    description: "Data is generated dynamically for this page",
-  };
+export async function generateMetadata({ params, searchParams }) {
+  const currentPage = params?.choirSlug;
+  const cluster = searchParams?.cluster;
+  try {
+    const data = await choirsDatabase();
+    const themeIndex = data.findIndex((choir) => choir.theme === cluster);
+    const foundCluster = data[themeIndex];
+    const foundChoir = foundCluster.data.find(
+      (choir) => choir._id === currentPage
+    );
+
+    const choirData = foundChoir?.choirDetails?.choirName || "Choir";
+
+    return {
+      title: `${choirData}'s Summary`,
+      description: `${choirData}'s SANS Score Sheet Summary`,
+    };
+  } catch (error) {
+    console.error("Metadata generation error:", error);
+    return {
+      title: "Choir Summary",
+      description: "SANS Score Sheet Summary",
+    };
+  }
 }
 
-export default async function ChoirSummary({ params }) {
-  const current = await params;
-  let currentPage;
-  if (current) {
-    currentPage = current.choirSlug || null;
+export default async function ChoirSummary({ params, searchParams }) {
+  const currentPage = params?.choirSlug;
+  const cluster = searchParams?.cluster;
+
+  if (!cluster || !currentPage) {
+    return <Loading>Loading...</Loading>;
   }
-  const choirs = await getFromDatabase(currentPage, "gratitude");
 
-  return (
-    <div className="flex flex-col md:flex-row w-full min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-full md:w-1/4 bg-gray-100 border-r">
-        <SideBar currentPage={currentPage} />
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-4 md:p-6 overflow-x-auto">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-800 text-center mb-6">
-            Choir Summary
-          </h2>
-          {choirs?.length ? (
-            <div className="overflow-x-auto">
-              <ScoreSummary choirs={choirs} />
-            </div>
-          ) : (
-            <p className="text-center text-gray-500">No data available</p>
-          )}
-        </div>
-      </main>
-    </div>
-  );
+  return <ChoirSummaryClient currentPage={currentPage} cluster={cluster} />;
 }

@@ -1,65 +1,78 @@
 "use server";
 import { redirect } from "next/navigation";
 import saveToDatabase from "./saveToDatabase";
-//install mongodb
 
-export default async function handleFormSubmit(formData) {
-  // const client = await MongoClient.connect(process.env.MONGODB_URI);
+export default async function handleFormSubmit(formData, harvestTheme) {
+  const entries = Object.fromEntries(formData.entries());
 
-  // Define criteria
-  const criteria = [
-    "Originality",
-    "Melody and Lyrics",
-    "Music Production and Arrangements",
-    "Theme Interpretation",
-    "Hymnal",
-    "Appearance and Discipline",
-    "Choreography and Audience Ovation",
-    "Lead Vocalist Delivery",
-  ];
-
-  //Build data object for each criterion
-  const data = {};
-  criteria.forEach((criterion) => {
-    data[criterion] = [
-      Number(formData.get(`igeSings_${criterion}`)),
-      Number(formData.get(`frettic_${criterion}`)),
-      Number(formData.get(`bambam_${criterion}`)),
-    ];
+  // Extract judges dynamically from form data, excluding "comment_" keys
+  const judgeNames = new Set();
+  Object.keys(entries).forEach((key) => {
+    const match = key.match(/^(.*?)_/); // Extract judge name before underscore
+    if (match && !key.startsWith("comment_")) {
+      judgeNames.add(match[1]);
+    }
   });
 
-  //Judge's comments
-  const comments = {
-    IgeSings: formData.get("comment_0"),
-    Frettic: formData.get("comment_1"),
-    Bambam: formData.get("comment_2"),
-  };
+  const judges = Array.from(judgeNames);
 
-  //Final object for database storage
+  // Define criteria dynamically
+  const criteria = new Set();
+  Object.keys(entries).forEach((key) => {
+    const match = key.match(/_(.*)$/); // Extract criteria after underscore
+    if (match && !key.startsWith("comment_")) {
+      // Ensure we're not adding comment keys
+      criteria.add(match[1]);
+    }
+  });
+
+  const criteriaList = Array.from(criteria);
+
+  // Build criteria data dynamically
+  const data = {};
+  criteriaList.forEach((criterion) => {
+    data[criterion] = judges.map(
+      (judge) => Number(entries[`${judge}_${criterion}`]) || 0
+    );
+  });
+
+  const comments = {};
+
+  // Ensure we correctly map comment_X to the right judge name
+  judges.forEach((judge, index) => {
+    const commentKey = `comment_${index}`; // Match comment_0, comment_1, etc.
+    if (entries.hasOwnProperty(commentKey)) {
+      comments[judge] = entries[commentKey]; // Assign correct value
+    }
+  });
+
+  // Construct final object for database storage
   try {
     const finalData = {
       choirDetails: {
-        choirName: formData.get("choirName"),
-        duration: formData.get("duration"),
-        choirTotalNumber: Number(formData.get("choirTotalNumber")),
-        choirBallotNumber: Number(formData.get("choirBallotNumber")),
-        choirArrivalTime: formData.get("choirArrivalTime"),
+        choirName: entries["choirName"] || "",
+        duration: entries["duration"] || "",
+        choirTotalNumber: Number(entries["choirTotalNumber"]) || 0,
+        choirBallotNumber: Number(entries["choirBallotNumber"]) || 0,
+        choirArrivalTime: entries["choirArrivalTime"] || "",
       },
-      criteria: data, // scores for each criterion
-      comments, // judges' comments
+      criteria: data, // Scores for each criterion
+      comments, // Judges' comments
     };
 
-    // Save data to the database
-    const result = await saveToDatabase(finalData);
+    //break submission until next event
 
-    //try and catch error here
+    return;
+    // Save data to the database
+    const result = await saveToDatabase(finalData, harvestTheme);
+
     if (result) {
-      console.log("FinalData", result);
-      redirect("/choirs");
+      redirect("/choirs/form");
     } else {
       throw new Error("Failed to save Data");
     }
   } catch (error) {
+    console.error("Error saving form data:", error);
     throw error;
   }
 }
