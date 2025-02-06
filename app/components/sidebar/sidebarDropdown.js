@@ -53,7 +53,7 @@ export default function SidebarDropdown({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="mt-2 space-y-3 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-gray-200"
+            className="mt-2 space-y-3 max-h-[calc(100vh-15rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-gray-200"
           >
             {choirs?.map((choir) => (
               <li key={choir._id}>

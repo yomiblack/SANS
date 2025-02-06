@@ -27,7 +27,7 @@ export async function POST(request) {
       // Email to Admin
       transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: "harmonicchoir1@gmail.com", // Admin notification
+        to: process.env.EMAIL_USER, // Admin notification
         subject: "New Newsletter Subscription",
         text: `A new user has subscribed: ${userEmail}`,
       }),
@@ -35,16 +35,28 @@ export async function POST(request) {
       // Email to the User
       transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: userEmail, // Send confirmation to user
+        to: userEmail,
         subject: "Subscription Confirmation",
-        text: `Thank you for subscribing to our newsletter! Stay tuned for updates.
-
-        The SANS Team!`,
+        html: `
+        <div style='text-align: center; padding: 20px;'>
+          <h2>Thank you for subscribing!</h2>
+          <p>Stay tuned for updates.</p>
+          <p><strong>The SANS Team!</strong></p>
+          <img src='cid:sansFooterLogo' alt='SANS Logo' width='50' style='margin-top: 10px;'/>
+        </div>
+        `,
+        attachments: [
+          {
+            filename: "sansFooterLogo.png",
+            path: "./public/sansFooterLogo.png",
+            cid: "sansFooterLogo",
+          },
+        ],
       }),
     ]);
 
     return NextResponse.json(
-      { success: true, message: "Subscription successful" }, // Ensure success is set to true
+      { success: true, message: "Subscription successful" },
       { status: 200 }
     );
   } catch (error) {

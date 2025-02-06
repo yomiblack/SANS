@@ -76,10 +76,11 @@ export default async function Retreat() {
                   <Image
                     src={image}
                     alt={`${option.title} Image ${imgIndex + 1}`}
-                    width={120}
-                    height={75}
-                    className="w-full h-full object-contain rounded-lg"
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover rounded-lg"
+                    // loading="lazy"
+                    priority
                   />
 
                   <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-opacity duration-300"></div>
@@ -88,8 +89,8 @@ export default async function Retreat() {
             </div>
 
             {/* Call-to-Action Button */}
-            <div className="p-4">
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
+            <div className="p-4 text-center">
+              <button className="w-auto bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
                 Learn More
               </button>
             </div>

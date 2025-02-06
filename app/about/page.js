@@ -20,7 +20,7 @@ export default function About() {
           animate={{ x: ["0vw", `-${(slidingImages.length / 2) * 100}vw`] }}
           transition={{
             repeat: Infinity,
-            duration: 100,
+            duration: 2000,
             ease: "linear",
           }}
         >
@@ -43,7 +43,7 @@ export default function About() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative bg-white p-6 md:p-10 rounded-lg shadow-lg max-w-3xl w-full text-center z-10 mb-20"
+        className="relative bg-white p-6 md:p-10 rounded-lg shadow-lg max-w-3xl w-full text-left z-10 mb-20"
       >
         <h1 className="font-heading text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-6">
           About <span className="font-display text-orange-700">SANS</span>
@@ -66,9 +66,9 @@ export default function About() {
           <Image
             src="/icon.png"
             alt="SANS Logo"
-            width={25}
-            height={20}
-            className="w-auto h-auto mx-auto object-contain"
+            width={20}
+            height={15}
+            className="object-cover"
             priority
           />
         </div>

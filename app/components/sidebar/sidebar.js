@@ -16,7 +16,7 @@ export default function SideBar({
         transition: { duration: 0.5, ease: "easeInOut" },
       }}
       exit={{ x: "-100%", opacity: 0 }}
-      className="p-2 md:p-4 bg-stone-800 text-stone-50 text-xs md:text-sm h-full"
+      className="p-2 md:p-4 bg-stone-800 text-stone-50 text-xs md:text-sm h-screen overflow-y-auto"
     >
       <h2 className="font-heading font-semibold md:font-bold text-orange-500 text-sm md:text-lg mb-3">
         Choirs

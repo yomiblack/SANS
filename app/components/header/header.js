@@ -46,16 +46,18 @@ export default function Header({
           <SidebarMenu toggleSidebar={toggleSidebar} />
 
           {/* Header logo */}
-          <Link href="/">
-            <Image
-              src="/sansFullLogo.png"
-              alt="SANS Full Logo"
-              width={120}
-              height={75}
-              className="object-contain"
-              priority
-            />
-          </Link>
+          <div className="relative w-[120px] h-[80px]">
+            <Link href="/">
+              <Image
+                src="/sansFullLogo.png"
+                alt="SANS Full Logo"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+                priority
+              />
+            </Link>
+          </div>
         </div>
         {/* Header Menu Icon */}
         <HeaderMenu toggleMenu={toggleMenu} />
