@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function Footer() {
   const [isSubscribing, setIsSubscribing] = useState(false);
+
   async function handleSubmit(event) {
     event.preventDefault();
     setIsSubscribing(true);
@@ -28,6 +29,11 @@ export default function Footer() {
 
       if (result.success) {
         alert("You have successfully subscribed to our newsletter");
+        event.target.reset();
+      } else {
+        alert(
+          "You have already subscribed to our newsletter. Stay tuned for updates!"
+        );
         event.target.reset();
       }
     } catch (error) {

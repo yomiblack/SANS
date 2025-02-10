@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { MongoClient } from "mongodb";
 
 export async function POST(request) {
   try {
@@ -12,6 +13,37 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
+    //Check database if user's email already exist
+
+    const client = new MongoClient(process.env.MONGODB_URI);
+    await client.connect();
+    const db = client.db();
+
+    const subscribersCollection = db.collection("subscribers");
+
+    const existingSubscribers = await subscribersCollection.findOne({
+      email: userEmail,
+    });
+
+    if (existingSubscribers) {
+      await client.close();
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "You have already subscribed to our newsletter. Stay tuned for updates!",
+        },
+        { status: 200 }
+      );
+    }
+
+    // Insert new subscriber to database
+    await subscribersCollection.insertOne({ email: userEmail });
+    const subscribers = await subscribersCollection.find().toArray();
+    const subscriberEmails = subscribers
+      .map((subscriber) => subscriber.email)
+      .join(", ");
 
     // Configure Nodemailer
     const transporter = nodemailer.createTransport({
@@ -29,7 +61,14 @@ export async function POST(request) {
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER, // Admin notification
         subject: "New Newsletter Subscription",
-        text: `A new user has subscribed: ${userEmail}`,
+        html: `
+           <div style='text-align: center; padding: 20px;'>
+            <h2>New Newsletter Subscriber</h2>
+            <p><strong>Email:</strong> ${userEmail}</p>
+            <p><strong>Total Subscribers:</strong> ${subscribers.length}</p>
+            <p><strong>Subscriber List:</strong> ${subscriberEmails}</p>
+          </div>
+        `,
       }),
 
       // Email to the User
@@ -39,21 +78,23 @@ export async function POST(request) {
         subject: "Subscription Confirmation",
         html: `
         <div style='text-align: center; padding: 20px;'>
+        <img src='cid:sansFooterLogo' alt='SANS Logo' width='50' style='margin-bottom: 5px;'/>
           <h2>Thank you for subscribing!</h2>
           <p>Stay tuned for updates.</p>
-          <p><strong>The SANS Team!</strong></p>
-          <img src='cid:sansFooterLogo' alt='SANS Logo' width='50' style='margin-top: 10px;'/>
+          <p><strong>- The SANS Team</strong></p>
         </div>
         `,
         attachments: [
           {
             filename: "sansFooterLogo.png",
-            path: "./public/sansFooterLogo.png",
+            path: "./app/components/assets/sansFooterLogo.png",
             cid: "sansFooterLogo",
           },
         ],
       }),
     ]);
+
+    await client.close();
 
     return NextResponse.json(
       { success: true, message: "Subscription successful" },
