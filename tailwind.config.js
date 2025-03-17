@@ -8,6 +8,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    darkMode: false, // Disable dark mode
     extend: {
       fontFamily: {
         heading: ["var(--font-montserrat)", "sans-serif"], // Headings
