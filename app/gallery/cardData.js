@@ -1,0 +1,42 @@
+export const cards = [
+    {
+        title: "SANS 1.0",
+        href: "/gallery/sans1.0",
+        from: "from-blue-500",
+        to: "to-green-500",
+        hoverFrom: "hover:from-green-600",
+        hoverTo: "hover:to-blue-600",
+    },
+    {
+        title: "SANS 2.0",
+        href: "/gallery/sans2.0",
+        from: "from-[#A9FF68]",
+        to: "to-[#FF8989]",
+        hoverFrom: "hover:from-[#FF8989]",
+        hoverTo: "hover:to-[#A9FF68]",
+    },
+    {
+        title: "SANS 3.0",
+        href: "/gallery/sans3.0",
+        from: "from-purple-500",
+        to: "to-pink-500",
+        hoverFrom: "hover:from-pink-600",
+        hoverTo: "hover:to-purple-600",
+    },
+    {
+        title: "Retreat",
+        href: "/gallery/retreat",
+        from: "from-yellow-500",
+        to: "to-red-500",
+        hoverFrom: "hover:from-red-600",
+        hoverTo: "hover:to-yellow-600",
+    },
+    {
+        title: "CSR Outreach",
+        href: "/gallery/outreach",
+        from: "from-orange-500",
+        to: "to-gray-500",
+        hoverFrom: "hover:from-gray-600",
+        hoverTo: "hover:to-orange-600",
+    },
+];
