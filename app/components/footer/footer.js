@@ -53,7 +53,7 @@ export default function Footer() {
         <ul className="font-display text-center md:text-left space-y-2">
           <li>
             <Link href="/about" className="hover:text-orange-500">
-              About Us
+              About
             </Link>
           </li>
           <li>
@@ -93,11 +93,10 @@ export default function Footer() {
             <button
               type="submit"
               disabled={isSubscribing}
-              className={`px-6 py-2 ${
-                isSubscribing
-                  ? "bg-orange-400 text-gray-300"
-                  : "bg-orange-500 text-white"
-              } rounded-md hover:bg-orange-600 mb-2 flex items-center justify-center gap-2`}
+              className={`px-6 py-2 ${isSubscribing
+                ? "bg-orange-400 text-gray-300"
+                : "bg-orange-500 text-white"
+                } rounded-md hover:bg-orange-600 mb-2 flex items-center justify-center gap-2`}
             >
               {isSubscribing && (
                 <svg

@@ -1,27 +1,34 @@
 "use client";
 import { motion } from "framer-motion";
+import { Play } from "lucide-react";
 
-export default function VideoCard({ name, videoURL }) {
+export default function VideoCard({ name, videoId, onClick }) {
   return (
     <motion.div
-      className="relative bg-white/20 backdrop-blur-md shadow-md overflow-hidden cursor-pointer border border-white/20 hover:shadow-xl transition-all duration-300"
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      onClick={onClick}
+      whileHover={{ scale: 1.06 }}
+      className="relative cursor-pointer group rounded-xl overflow-hidden bg-black shadow-lg"
     >
-      <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-        <iframe
-          src={`https://www.youtube.com/embed/${videoURL.split("v=")[1]}`}
-          title={name}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full"
-        />
+      {/* Thumbnail */}
+      <img
+        src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+        alt={name}
+        className="w-full aspect-video object-cover"
+      />
+
+      {/* Dark gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition" />
+
+      {/* Play icon */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+        <div className="bg-white/90 p-4 rounded-full">
+          <Play className="text-black w-8 h-8" />
+        </div>
       </div>
-      <div className="p-3">
-        <h3 className="text-lg font-semibold text-gray-900 text-left truncate">{name}</h3>
+
+      {/* Title */}
+      <div className="absolute bottom-2 left-3 right-3 text-white text-sm font-semibold truncate opacity-0 group-hover:opacity-100 transition">
+        {name}
       </div>
     </motion.div>
   );

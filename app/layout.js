@@ -33,7 +33,7 @@ const playfair = Playfair_Display({
 export default async function RootLayout({ children }) {
   const choirsByTheme = await choirsDatabase();
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>

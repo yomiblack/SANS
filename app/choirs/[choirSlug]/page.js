@@ -1,10 +1,10 @@
-import Loading from "@/app/components/util/loading";
+import { notFound } from "next/navigation";
 import ChoirSummaryClient from "@/app/components/slug/choirSummaryClient";
 import choirsDatabase from "@/app/components/action/choirsDatabase";
 
 export async function generateMetadata({ params, searchParams }) {
-  const currentPage = params?.choirSlug;
-  const cluster = searchParams?.cluster;
+  const currentPage =  params?.choirSlug;
+  const cluster =  searchParams?.cluster;
   try {
     const data = await choirsDatabase();
     const themeIndex = data.findIndex((choir) => choir.theme === cluster);
@@ -32,9 +32,7 @@ export default async function ChoirSummary({ params, searchParams }) {
   const currentPage = params?.choirSlug;
   const cluster = searchParams?.cluster;
 
-  if (!cluster || !currentPage) {
-    return <Loading>Loading...</Loading>;
-  }
+  if (!cluster || !currentPage) notFound();
 
   return <ChoirSummaryClient currentPage={currentPage} cluster={cluster} />;
 }

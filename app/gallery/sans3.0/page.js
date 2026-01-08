@@ -1,46 +1,158 @@
-import Link from "next/link";
+"use client";
+
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Sans3() {
+  const videoRef = useRef(null);
+
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [muted, setMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [showControls, setShowControls] = useState(false);
+
+  /* ---------- Sync autoplay ---------- */
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    videoRef.current.play().catch(() => {
+      setIsPlaying(false);
+    });
+  }, []);
+
+  /* ---------- Pause on tab blur ---------- */
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.hidden && videoRef.current) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibility);
+  }, []);
+
+  /* ---------- Keyboard shortcuts ---------- */
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!videoRef.current) return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        togglePlay();
+      }
+
+      if (e.key.toLowerCase() === "m") {
+        setMuted((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isPlaying]);
+
+  /* ---------- Video progress ---------- */
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const percent = (video.currentTime / video.duration) * 100;
+    setProgress(percent);
+  };
+
+  const handleSeek = (e) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const rect = e.target.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+
+    video.currentTime = percentage * video.duration;
+  };
+
+  /* ---------- Controls ---------- */
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+
+    setIsPlaying(!isPlaying);
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#2C3178]  to-[#EB1D75] text-stone-50">
-      <div className="text-center space-y-6">
-        {/* Title */}
-        <h1 className="text-4xl font-bold tracking-wider">Save the Date!</h1>
+    <div
+      className="relative w-full h-screen bg-black overflow-hidden"
+      onMouseEnter={() => setShowControls(true)}
+      onMouseLeave={() => setShowControls(false)}
+    >
+      {/* Video */}
+      <video
+        ref={videoRef}
+        src="/videos/sans3.0highlights.mp4"
+        autoPlay
+        loop
+        muted={muted}
+        playsInline
+        onTimeUpdate={handleTimeUpdate}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
-        {/* Subtitle */}
-        <p className="text-lg">
-          Exciting things are on the horizon! Our next event is coming soon.
-          Stay tuned for details.
+      {/* Cinematic overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-16 max-w-3xl text-white">
+        <h1 className="font-display text-4xl md:text-6xl font-extrabold mb-4">
+          SANS 3.0
+        </h1>
+
+        <p className="text-base md:text-lg text-gray-200 mb-6 leading-relaxed">
+          A celebration of sound, passion, and unforgettable performances.
+          Experience the journey like never before.
         </p>
 
-        {/* Event Placeholder Icon */}
-        <div className="mx-auto w-24 h-24 bg-gradient-to-br from-pink-500 via-orange-500 to-yellow-400 rounded-full flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-12 h-12 text-stone-50"
+        {/* Buttons */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={togglePlay}
+            className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-md font-semibold hover:bg-gray-200 transition"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8c-3.866 0-7 3.134-7 7m14 0c0-3.866-3.134-7-7-7m0 0V4m0 8h4m-4 0H8m8 0a1 1 0 11-2 0 1 1 0 012 0z"
-            />
-          </svg>
-        </div>
-
-        {/* Call to Action */}
-        <p className="text-sm text-stone-300">
-          Mark your calendar and follow us for updates!
-        </p>
-
-        <Link href="https://www.instagram.com/harmonicchoir_/profilecard/?igsh=MTV0NWd4NjhoaGw1Mw==">
-          <button className="mt-10 px-6 py-3 bg-orange-500 hover:bg-orange-700 text-white rounded-lg shadow-lg transition duration-300">
-            Stay Updated
+            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+            {isPlaying ? "Pause" : "Play"}
           </button>
-        </Link>
+
+          <button
+            onClick={() => setMuted(!muted)}
+            className="flex items-center justify-center w-12 h-12 rounded-full border border-white/60 hover:bg-white/10 transition"
+            aria-label="Toggle mute"
+          >
+            {muted ? <VolumeX /> : <Volume2 />}
+          </button>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div
+        className={`absolute bottom-0 left-0 right-0 h-1 bg-white/20 cursor-pointer transition-opacity ${showControls ? "opacity-100" : "opacity-0"
+          }`}
+        onClick={handleSeek}
+      >
+        <div
+          className="h-full bg-red-600"
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </div>
   );

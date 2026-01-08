@@ -13,7 +13,7 @@ export default function FormParamsInput({
     <div className="mb-4">
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-2 text-center md:text-left"
+        className="capitalize block text-sm font-medium text-gray-700 mb-2 text-center md:text-left"
       >
         {name}
       </label>
@@ -23,7 +23,7 @@ export default function FormParamsInput({
         min="1"
         placeholder={placeholder}
         required
-        className={`w-full px-4 py-2 border rounded-md ${activeClass}`}
+        className={`capitalize w-full px-4 py-2 border rounded-md ${activeClass}`}
         initial={{ boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)" }}
         whileFocus={{
           boxShadow: "0px 0px 10px rgba(99, 102, 241, 0.5)",

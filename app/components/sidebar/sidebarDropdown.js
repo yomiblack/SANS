@@ -61,10 +61,10 @@ export default function SidebarDropdown({
                   className={
                     currentPage === `${choir._id}` ? activeClass : inactiveClass
                   }
-                  href={`/choirs/${choir._id}${
-                    queryString ? `?${queryString}` : ""
-                  }`}
+                  href={`/choirs/${choir._id}${queryString ? `?${queryString}` : ""
+                    }`}
                   onClick={() => {
+                    // console.log(`${choir_id}, ${currentPage}`);
                     if (isSidebarOpen) {
                       toggleSidebar(); // Close the sidebar first
                     }

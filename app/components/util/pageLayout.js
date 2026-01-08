@@ -8,7 +8,6 @@ import Footer from "../footer/footer";
 import Link from "next/link";
 
 export default function PageLayout({ choirsByTheme, children }) {
-  // console.log(choirsByTheme);
   const pathname = usePathname();
   const isLandingPage = pathname === "/";
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for mobile sidebar
@@ -16,7 +15,7 @@ export default function PageLayout({ choirsByTheme, children }) {
 
   const navArray = [
     { name: "Home", route: "/" },
-    { name: "About Us", route: "/about" },
+    { name: "About", route: "/about" },
     { name: "Gallery", route: "/gallery" },
     { name: "Choirs", route: "/choirs" },
     { name: "Results", route: "/result" },

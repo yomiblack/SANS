@@ -3,6 +3,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import ResultSummary from "./resultSummary";
 import Loading from "../util/loading";
+import BlurBackground from "../util/blurBackground";
+import useModal from "@/app/hooks/useModal";
 
 export default function ResultClient({ choirsByTheme }) {
   const [selectedContest, setSelectedContest] = useState("");
@@ -10,6 +12,8 @@ export default function ResultClient({ choirsByTheme }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null); // Track the selected index
+
+  const modal = useModal();
 
   async function handleClick(value, index) {
     if (!value) return; // Do nothing if no valid value is selected
@@ -21,6 +25,7 @@ export default function ResultClient({ choirsByTheme }) {
       // Update the state with the new data and index
       setChoirs(value);
       setSelectedIndex(index + 1); // Store the index + 1
+      modal.open();
     } catch (err) {
       setError("Failed to fetch data. Please try again.");
       console.error(err);
@@ -109,14 +114,17 @@ export default function ResultClient({ choirsByTheme }) {
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       {/* Display the result summary only if choirs is not null */}
-      {choirs && (
-        <ResultSummary
-          choirs={choirs}
-          index={selectedIndex}
-          setChoirs={setChoirs}
-          setSelectedContest={setSelectedContest}
-        />
-      )}
+      <BlurBackground open={modal.isOpen} onClose={modal.close} setChoirs={setChoirs} setSelectedContest={setSelectedContest}>
+        {choirs && (
+          <ResultSummary
+            choirs={choirs}
+            index={selectedIndex}
+            setChoirs={setChoirs}
+            setSelectedContest={setSelectedContest}
+            onClose={modal.close}
+          />
+        )}
+      </BlurBackground>
     </>
   );
-}
+};
