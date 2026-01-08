@@ -56,7 +56,7 @@ export default function Sans3() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [isPlaying]);
+  }, [isPlaying, togglePlay]);
 
   /* ---------- Video progress ---------- */
   const handleTimeUpdate = () => {
