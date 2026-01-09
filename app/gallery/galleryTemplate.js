@@ -15,7 +15,7 @@ export default function GalleryTemplate({ episode, participants, event }) {
             setData(result);
         }
         fetchData();
-    }, []);
+    }, [participants]);
 
     function getVideoId(url) {
         return url.split("v=")[1];
