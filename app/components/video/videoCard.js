@@ -11,7 +11,7 @@ export default function VideoCard({ name, videoId, onClick }) {
       className="relative cursor-pointer group rounded-xl overflow-hidden bg-black shadow-lg"
     >
       {/* Thumbnail */}
-      <Image
+      <img
         src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
         alt={name}
         className="w-full aspect-video object-cover"

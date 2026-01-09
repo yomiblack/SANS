@@ -46,18 +46,18 @@ export default function Form() {
     const storedData = localStorage.getItem("formdata");
 
     if (!storedData) {
-      router.replace("/choirs"); // ✅ no history pollution
+      router.replace("/choirs"); // no history pollution
       return;
     }
 
     try {
       const parsed = JSON.parse(storedData);
       setData(parsed);
-      localStorage.removeItem("formdata"); // ✅ safe now
+      localStorage.removeItem("formdata"); // safe now
     } catch {
       router.replace("/choirs");
     }
-  }, []);
+  }, [closeAddChoir, disableSignin, router]);
 
 
   async function handleSubmit(event) {
