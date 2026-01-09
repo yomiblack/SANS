@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
+import Image from "next/image";
 
 export default function VideoCard({ name, videoId, onClick }) {
   return (
@@ -10,7 +11,7 @@ export default function VideoCard({ name, videoId, onClick }) {
       className="relative cursor-pointer group rounded-xl overflow-hidden bg-black shadow-lg"
     >
       {/* Thumbnail */}
-      <img
+      <Image
         src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
         alt={name}
         className="w-full aspect-video object-cover"

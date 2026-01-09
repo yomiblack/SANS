@@ -63,7 +63,7 @@ export default function SignIn({ closeAddChoir }) {
         const onEsc = (e) => e.key === "Escape" && closeAddChoir;
         window.addEventListener("keydown", onEsc);
         return () => window.removeEventListener("keydown", onEsc);
-    }, []);
+    }, [closeAddChoir]);
 
     return (
         <div
