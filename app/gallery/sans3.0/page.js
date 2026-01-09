@@ -6,7 +6,7 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 export default function Sans3() {
   const videoRef = useRef(null);
@@ -18,17 +18,19 @@ export default function Sans3() {
 
 
   /* ---------- Controls ---------- */
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     if (!videoRef.current) return;
 
-    if (isPlaying) {
-      videoRef.current.pause();
-    } else {
+    if (videoRef.current.paused) {
       videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
     }
+  }, [])
 
-    setIsPlaying(!isPlaying);
-  };
+
 
   /* ---------- Sync autoplay ---------- */
   useEffect(() => {

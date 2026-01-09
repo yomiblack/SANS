@@ -11,7 +11,7 @@ export default function Profile() {
 
   useEffect(() => {
     enableSignin();
-  }, [])
+  }, [enableSignin])
 
   return (
     <div className="flex flex-col md:flex-row">
