@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import Image from "next/image";
 
 export default function VideoCard({ name, videoId, onClick }) {
   return (
@@ -24,7 +23,7 @@ export default function VideoCard({ name, videoId, onClick }) {
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
         <div className="bg-white/90 p-4 rounded-full">
           <Play className="text-black w-8 h-8" />
-        </div>  
+        </div>
       </div>
 
       {/* Title */}
