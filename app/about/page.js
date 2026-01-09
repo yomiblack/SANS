@@ -1,78 +1,57 @@
 "use client";
+
+
+import VideoBackground from "@/app/components/media/videoBackground";
+import VideoOverlay from "@/app/components/media/videoOverlay";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { useMemo } from "react";
 
 export default function About() {
-  const images = Array.from(
-    { length: 16 },
-    (_, i) => `/about/backgrounds/image-${i + 1}.jpg`
-  );
-  const slidingImages = useMemo(() => images.concat(images), [images]);
-
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen px-4 md:px-8 overflow-hidden">
-      {/* Background Sliding Images */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.div
-          className="absolute top-0 left-0 flex h-full"
-          style={{ width: `${slidingImages.length * 100}vw` }}
-          animate={{ x: ["0vw", `-${(slidingImages.length / 2) * 100}vw`] }}
-          transition={{
-            repeat: Infinity,
-            duration: 2000,
-            ease: "linear",
-          }}
-        >
-          {slidingImages.map((src, index) => (
-            <div key={index} className="relative w-screen h-full flex-shrink-0">
-              <Image
-                src={src}
-                alt={`Background ${index + 1}`}
-                fill
-                className="object-cover"
-                loading="lazy" // Defer loading until needed
-              />
-            </div>
-          ))}
-        </motion.div>
-      </div>
+    <div className="relative min-h-screen flex items-center justify-center px-4 md:px-8 overflow-hidden">
+
+      {/* Video Background */}
+      <VideoBackground
+        src="/videos/sans3.0highlights.mp4"
+        poster="/sansFullLogo.png"
+      />
 
       {/* Foreground Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative bg-white p-6 md:p-10 rounded-lg shadow-lg max-w-3xl w-full text-left z-10 mb-20"
-      >
-        <h1 className="font-heading text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-6">
-          About <span className="font-display text-orange-700">SANS</span>
+      <VideoOverlay>
+        <h1 className="font-heading text-2xl md:text-4xl font-bold text-white mb-4">
+          About <span className="font-display text-orange-400">SANS</span>
         </h1>
-        <p className=" text-sm md:text-lg leading-relaxed text-gray-700">
-          <span className="font-heading text-orange-700 font-semibold">
-            &quot;Sing A New Song&quot;
+
+        <p className="text-sm md:text-lg text-gray-200 leading-relaxed">
+          <span className="text-orange-400 font-semibold">
+            “Sing A New Song”
           </span>{" "}
-          (SANS) is a transformative initiative that celebrates gospel music. It
-          inspires choirs to embrace creativity, originality, and deeper
-          spiritual connection, unlocking their artistic potential.
+          (SANS) is a faith-driven initiative dedicated to nurturing creativity,
+          excellence, and spiritual depth through gospel music.
         </p>
-        <p className="text-sm md:text-lg leading-relaxed text-gray-700 mt-4">
-          SANS seeks to reignite passion for gospel music, encouraging choirs to
-          reimagine their craft and instilling a fresh appreciation for
-          powerful, timeless melodies. Through this initiative, we hope its
-          impact resonates long after the final note is sung.
+
+        <p className="text-sm md:text-lg text-gray-200 leading-relaxed mt-4">
+          Beyond music, SANS actively engages in community outreach and corporate social
+          responsibility programmes, using art as a tool to uplift lives, inspire hope,
+          and give back meaningfully to the society.
         </p>
+
+        <p className="text-sm md:text-lg text-gray-200 leading-relaxed mt-4">
+          We welcome partnerships, sponsorships, and collaborations with individuals
+          and organizations who share our vision of impact through purpose-driven
+          creativity.
+        </p>
+
+
         <div className="mt-6">
           <Image
             src="/icon.png"
             alt="SANS Logo"
-            width={20}
-            height={15}
-            className="object-cover"
+            width={32}
+            height={32}
             priority
           />
         </div>
-      </motion.div>
+      </VideoOverlay>
     </div>
   );
 }

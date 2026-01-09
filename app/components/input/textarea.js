@@ -11,7 +11,7 @@ export default function Textarea({ judges }) {
         <div key={index} className="mb-4">
           <label
             htmlFor={`comment_${index}`}
-            className="font-display block font-semibold mb-2"
+            className="capitalize font-display block font-semibold mb-2"
           >
             {judge}&apos;s Comments
           </label>

@@ -1,7 +1,7 @@
 import getFromDatabase from "./getFromDatabase";
 
 export default async function choirsDatabase() {
-  const themes = ["New Glory", "gratitude"];
+  const themes = ["New Glory", "gratitude", 'Joy Overflow'];
 
   // Use Promise.all to await all database calls concurrently
   const allData = await Promise.all(

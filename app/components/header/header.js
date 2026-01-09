@@ -46,18 +46,18 @@ export default function Header({
           <SidebarMenu toggleSidebar={toggleSidebar} />
 
           {/* Header logo */}
-          <div className="relative w-[120px] h-[80px]">
-            <Link href="/">
+          <Link href="/">
+            <div className="relative w-[120px] h-[80px]">
               <Image
                 src="/sansFullLogo.png"
                 alt="SANS Full Logo"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
+                className="object-contain"
                 priority
               />
-            </Link>
-          </div>
+            </div>
+          </Link>
         </div>
         {/* Header Menu Icon */}
         <HeaderMenu toggleMenu={toggleMenu} />
@@ -70,8 +70,8 @@ export default function Header({
             <li
               key={index}
               className="whitespace-nowrap"
-              // onClick={() => isMenuOpen && setIsMenuOpen((prev) => !prev)}
-              // onClick={toggleMenu}
+            // onClick={() => isMenuOpen && setIsMenuOpen((prev) => !prev)}
+            // onClick={toggleMenu}
             >
               {LinkHover(nav.name, nav.route)}
             </li>

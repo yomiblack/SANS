@@ -35,6 +35,7 @@
 import { MongoClient } from "mongodb";
 
 export default async function saveToDatabase(finalData, cluster) {
+
   const client = new MongoClient(process.env.MONGODB_URI);
 
   try {

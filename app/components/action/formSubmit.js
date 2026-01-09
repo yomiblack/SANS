@@ -61,18 +61,19 @@ export default async function handleFormSubmit(formData, harvestTheme) {
     };
 
     //break submission until next event
+    // return;
 
-    return;
     // Save data to the database
     const result = await saveToDatabase(finalData, harvestTheme);
 
-    if (result) {
-      redirect("/choirs/form");
-    } else {
-      throw new Error("Failed to save Data");
+    if (!result.success) {
+      throw new Error(result.error);
     }
+
   } catch (error) {
     console.error("Error saving form data:", error);
     throw error;
   }
+
+  redirect("/choirs/form");
 }

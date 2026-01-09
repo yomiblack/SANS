@@ -5,28 +5,79 @@ import Button from "@/app/components/button/button";
 import handleFormSubmit from "@/app/components/action/formSubmit";
 import AnimateWrap from "@/app/components/util/animateWrap";
 import Textarea from "@/app/components/input/textarea";
-import { useState, useEffect } from "react";
+import { metrics } from "@/app/components/util/form/metrics";
+import { UseUIStore } from "@/app/store/uiStore";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+
+
 
 export default function Form() {
   const [data, setData] = useState(null);
+  const hasInitialized = useRef(false);
+
+  const disableSignin = UseUIStore((state) => state.disableSignin);
+  const enableSignin = UseUIStore((state) => state.enableSignin);
+
+  const closeAddChoir = UseUIStore((state) => state.closeAddChoir);
+
+  const router = useRouter();
+  // useEffect(() => {
+  //   closeAddChoir();
+  //   disableSignin();
+
+  //   const storedData = localStorage.getItem("formdata");
+  //   if (!storedData) {
+  //     setData(null);
+  //     return;
+  //   }
+
+  //   setData(JSON.parse(storedData));
+  // }, []);
+
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      // const storedData = localStorage.getItem("key");
-      const storedData = JSON.parse(localStorage.getItem("formdata"));
-      setData(storedData);
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
+    closeAddChoir();
+    disableSignin();
+
+    const storedData = localStorage.getItem("formdata");
+
+    if (!storedData) {
+      router.replace("/choirs"); // ✅ no history pollution
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(storedData);
+      setData(parsed);
+      localStorage.removeItem("formdata"); // ✅ safe now
+    } catch {
+      router.replace("/choirs");
     }
   }, []);
+
 
   async function handleSubmit(event) {
     event.preventDefault();
 
+
     const formData = new FormData(event.target);
     const harvestTheme = data.harvestTheme; // Extracting data correctly
+
+    // localStorage.removeItem("formdata");
+
+    event.target.reset();
+    // enableSignin();
     await handleFormSubmit(formData, harvestTheme);
   }
 
   let judges;
+
+  if (!data) return null;
+
   if (data) {
     judges = Object.keys(data)
       .filter((key) => key.startsWith("judge"))
@@ -51,22 +102,22 @@ export default function Form() {
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
               <div className="w-full sm:w-1/2">
-                <Input name="choirName" type="text">
-                  Name
+                <Input name="choirName" type="text" placeholder='Name of choir'>
+                  choir name
                 </Input>
               </div>
               <div className="w-full sm:w-1/2 grid grid-cols-2 gap-4 text-sm whitespace-nowrap">
-                <Input name="duration" type="time">
-                  Duration
+                <Input name="duration" type="text" placeholder='MM:SS'>
+                  performance duration
                 </Input>
-                <Input name="choirTotalNumber" type="number">
-                  Total Number
+                <Input name="choirTotalNumber" type="number" placeholder='Number of choristers'>
+                  total number
                 </Input>
-                <Input name="choirBallotNumber" type="number">
-                  Ballot Number
+                <Input name="choirBallotNumber" type="number" placeholder='Choir ballot number'>
+                  ballot number
                 </Input>
                 <Input name="choirArrivalTime" type="time">
-                  Arrival Time
+                  arrival time
                 </Input>
               </div>
             </div>
@@ -84,7 +135,7 @@ export default function Form() {
                   {judges.map((judge, index) => (
                     <th
                       key={index}
-                      className=" whitespace-nowrap border border-gray-300 px-4 py-2"
+                      className="capitalize whitespace-nowrap border border-gray-300 px-4 py-2"
                     >
                       {judge}
                     </th>
@@ -92,22 +143,7 @@ export default function Form() {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { criteria: "Originality", threshold: 15 },
-                  { criteria: "Melody and Lyrics", threshold: 15 },
-                  {
-                    criteria: "Music Production and Arrangements",
-                    threshold: 20,
-                  },
-                  { criteria: "Theme Interpretation", threshold: 10 },
-                  { criteria: "Hymnal", threshold: 10 },
-                  { criteria: "Appearance and Discipline", threshold: 10 },
-                  {
-                    criteria: "Choreography and Audience Ovation",
-                    threshold: 10,
-                  },
-                  { criteria: "Lead Vocalist Delivery", threshold: 10 },
-                ].map((item, index) => (
+                {metrics.map((item, index) => (
                   <tr key={index} className="bg-white">
                     <td className="border border-gray-300 px-4 py-2 text-left">
                       {item.criteria}
@@ -123,6 +159,7 @@ export default function Form() {
                         <Input
                           name={`${judge}_${item.criteria}`}
                           type="number"
+                          max={item.threshold}
                         />
                       </td>
                     ))}

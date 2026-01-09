@@ -1,7 +1,9 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function BlurBackground({ children }) {
+export default function BlurBackground({ open, onClose, children, setChoirs, setSelectedContest }) {
+
+  if (!open) return null;
   return (
     <AnimatePresence>
       <motion.div
@@ -10,6 +12,11 @@ export default function BlurBackground({ children }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
         exit={{ scale: 0.8, opacity: 0 }}
+        onClick={() => {
+          onClose();
+          setChoirs(null);
+          setSelectedContest('')
+        }}
       >
         {/* Modal Container */}
         <motion.div
@@ -17,11 +24,12 @@ export default function BlurBackground({ children }) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+          onClick={(e) => e.stopPropagation()}
         >
           {/* Modal Content */}
           <div className="p-6">{children}</div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence >
   );
 }

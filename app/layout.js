@@ -2,6 +2,7 @@ import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import PageLayout from "./components/util/pageLayout";
 import "./globals.css";
 import choirsDatabase from "./components/action/choirsDatabase";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata = {
   title: "SANS! - Musical Contest",
@@ -33,7 +34,7 @@ const playfair = Playfair_Display({
 export default async function RootLayout({ children }) {
   const choirsByTheme = await choirsDatabase();
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
@@ -41,7 +42,10 @@ export default async function RootLayout({ children }) {
         className={`${inter.variable} ${montserrat.variable} ${playfair.variable} antialiased`}
       >
         <div className="min-h-screen bg-gradient-to-br from-[#2C3178] via-[#FDFCFB] to-[#EB1D75]">
-          <PageLayout choirsByTheme={choirsByTheme}>{children}</PageLayout>
+          <PageLayout choirsByTheme={choirsByTheme}>
+            {children}
+            <Analytics />
+          </PageLayout>
         </div>
       </body>
     </html>

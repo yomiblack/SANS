@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { metrics } from "../util/form/metrics";
 
 export default function ScoreSummary({ choirs, episode }) {
   const judges = Object.keys(choirs.comments); // Extract the Judge's names dynamically
@@ -71,26 +72,11 @@ export default function ScoreSummary({ choirs, episode }) {
               </tr>
             </thead>
             <tbody>
-              {[
-                { criteria: "Originality", threshold: 15 },
-                { criteria: "Melody and Lyrics", threshold: 15 },
-                {
-                  criteria: "Music Production and Arrangements",
-                  threshold: 20,
-                },
-                { criteria: "Theme Interpretation", threshold: 10 },
-                { criteria: "Hymnal", threshold: 10 },
-                { criteria: "Appearance and Discipline", threshold: 10 },
-                {
-                  criteria: "Choreography and Audience Ovation",
-                  threshold: 10,
-                },
-                { criteria: "Lead Vocalist Delivery", threshold: 10 },
-              ].map((item, index) => {
+              {metrics.map((item, index) => {
                 const scores =
                   choirs.criteria[item.criteria] ||
                   Array.from({ length: judges.length }, () => 0);
-                const total = scores.reduce((a, b) => a + b, 0);
+                const total = scores.reduce((a, b) => a + b, 0).toFixed(2);
                 const average = scores.length > 0 ? total / scores.length : 0; // Prevent division by zero
 
                 return (

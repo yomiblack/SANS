@@ -17,6 +17,5 @@ export default async function handleFormParams(
   // Add harvestTheme to the data object
   data.harvestTheme = harvestTheme;
   data.sansEpisode = sansEpisode;
-
   return data;
 }
